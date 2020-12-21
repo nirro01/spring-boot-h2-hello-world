@@ -23,14 +23,14 @@ public class TestingWebApplicationTest {
     private static final String STUDENT_PATH = "/student";
 
     @Test
-    public void shouldReturnStatusNotFoundOnGetStudentAPIWhenIDDoesNotExist() throws Exception {
-        this.mockMvc.perform(get(STUDENT_PATH + "/1"))
+    public void shouldReturnStatusNotFoundOnGetStudentWhenIDDoesNotExist() throws Exception {
+        this.mockMvc.perform(get(STUDENT_PATH + "/99999"))
                 .andDo(print())
                 .andExpect(status().isNotFound());
     }
 
     @Test
-    public void shouldReturnStatusCreateOnPostStudent() throws Exception {
+    public void shouldReturnStatusCreatedOnPostStudent() throws Exception {
         this.mockMvc.perform(post(STUDENT_PATH).contentType(MediaType.APPLICATION_JSON_VALUE).content(
                 "{\n" +
                         "    \"name\" : \"nir\",\n" +
@@ -42,23 +42,6 @@ public class TestingWebApplicationTest {
 
     @Test
     public void shouldFindStudentByNameAfterPostStudent() throws Exception {
-        this.mockMvc.perform(post(STUDENT_PATH).contentType(MediaType.APPLICATION_JSON_VALUE).content(
-                "{\n" +
-                        "    \"name\" : \"elhai\",\n" +
-                        "    \"email\" : \"elhai@blabla.com\"\n" +
-                        "}"))
-                .andDo(print())
-                .andExpect(status().isCreated());
-
-        this.mockMvc.perform(get(STUDENT_PATH).queryParam("name", "elhai"))
-                .andDo(print())
-                .andExpect(jsonPath("$.[0].name").value("elhai"))
-                .andExpect(jsonPath("$.[0].email").value("elhai@blabla.com"))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    public void shouldFindDeletedStudent() throws Exception {
         this.mockMvc.perform(post(STUDENT_PATH).contentType(MediaType.APPLICATION_JSON_VALUE).content(
                 "{\n" +
                         "    \"name\" : \"elhai\",\n" +
